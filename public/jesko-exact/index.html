@@ -1321,24 +1321,5 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 }
 </style>
 
-<style id="locas-mobile-window-sky-fix">
-@media (max-width:767px){
-  /* During the mobile window opening, only sky may be revealed. */
-  #hero .hero-w_bg_back{
-    position:absolute!important;inset:0!important;width:100vw!important;height:100svh!important;overflow:hidden!important;z-index:0!important;
-  }
-  #hero .hero-w_bg_back .img-w,#hero .hero-w_bg_back img{
-    width:100%!important;height:100%!important;min-width:100%!important;min-height:100%!important;
-  }
-  #hero .hero-w_bg_back img{object-fit:cover!important;object-position:center center!important;}
-  #hero .hero-w_bg_front,#hero .hero-w_bg_front-over{z-index:2!important;}
-  #hero .hero_overlay{display:none!important;}
-  /* Prevent any lower cabin/frame remnants from being exposed below the window opening. */
-  #hero .hero-w_bg{background:#56b9e6!important;}
-  #hero .hero-w_bg::after{
-    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:transparent;
-  }
-}
-</style>
+
 </body></html>
