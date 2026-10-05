@@ -1093,6 +1093,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   #hero .hero-w_bg_window_c{overflow:visible!important;}
   #hero .hero-w_bg_window_c{position:relative!important;}
 
+  #hero,.hero_scroll-area{min-height:320svh!important;}
   .hero-w{position:relative!important;}
   .locas-window-story{
     position:fixed;
@@ -1148,6 +1149,30 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
   /* Header receives the logo after the hero hand-off */
   .header_logo{opacity:0;transform:translateY(-8px) scale(.82);will-change:transform,opacity;}
+
+  /* Clean handoff into the content below the hero */
+  #hero + .section,
+  #hero ~ .section{position:relative;z-index:1;}
+  #about{padding-top:clamp(4rem,12vw,6rem)!important;}
+  #about .about-s_lead-text,
+  #about .about-s_lead-text_c{margin-top:0!important;transform:none!important;}
+  #about .about-s_lead-text .p2{line-height:1.03!important;}
+  #about .features-cms_list_item{margin-bottom:2.25rem!important;}
+  #about .features-card{transform:none!important;}
+  #about .features-card .text-light,
+  #about .features-card p,
+  #about .features-card h2,
+  #about .features-card h3,
+  #about .features-card h4{color:#312726!important;}
+
+  /* Keep the handed-off logo readable over both sky and light content */
+  .header_logo{
+    padding:.42rem .65rem!important;
+    border-radius:999px!important;
+    background:rgba(18,83,127,.30)!important;
+    -webkit-backdrop-filter:blur(8px)!important;
+    backdrop-filter:blur(8px)!important;
+  }
 }
 </style>
 <script id="locas-hero-mobile-motion-v2">
@@ -1174,37 +1199,38 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
     const kicker=story.querySelector('.locas-window-kicker');
     const tagline=story.querySelector('.locas-window-tagline');
-    const cta=document.querySelector('.btn-cta-c');
+    const cta=document.querySelector('.cta');
 
     function render(p){
-      /* 0-.16: appear and enlarge. .16-.44: hero logo at full emphasis.
-         .44-.72: shrink and rise. .72+: hand off to header. */
-      const intro=smooth(p/.16);
-      const settle=smooth((p-.16)/.22);
-      const travel=smooth((p-.44)/.30);
-      const hand=smooth((p-.68)/.18);
+      /* Longer mobile story:
+         0-.12 enter/enlarge, .12-.55 hold, .55-.82 shrink/rise, .78+ handoff. */
+      const intro=smooth(p/.12);
+      const settle=smooth((p-.12)/.18);
+      const travel=smooth((p-.65)/.25);
+      const hand=smooth((p-.87)/.11);
 
-      let scale=.78 + intro*.46;          // .78 -> 1.24
-      if(p>.16) scale=1.24 - settle*.16;  // 1.24 -> 1.08
-      if(p>.44) scale=1.08 - travel*.48;  // 1.08 -> .60
+      let scale=.80 + intro*.46;          // .80 -> 1.26
+      if(p>.12) scale=1.26 - settle*.14;  // 1.26 -> 1.12
+      if(p>.55) scale=1.12 - travel*.50;  // 1.12 -> .62
       const y=-50 - travel*135;           // rise toward header
       const logoOpacity=1-hand;
       logoHost.style.transform=`translate(-50%, ${y}%) scale(${scale})`;
       logoHost.style.opacity=String(logoOpacity);
 
-      const copyIn=smooth((p-.06)/.12);
-      const copyOut=smooth((p-.48)/.18);
+      const copyIn=smooth((p-.035)/.09);
+      const copyOut=smooth((p-.80)/.12);
       const copyOpacity=copyIn*(1-copyOut);
       kicker.style.opacity=String(copyOpacity);
       tagline.style.opacity=String(copyOpacity);
       kicker.style.transform=`translateY(${(1-copyIn)*14 - copyOut*18}px)`;
       tagline.style.transform=`translateY(${(1-copyIn)*18 + copyOut*12}px)`;
 
-      story.style.opacity=String(1-smooth((p-.78)/.12));
+      story.style.opacity=String(1-smooth((p-.94)/.05));
       if(cta){
-        const ctaOut=smooth((p-.66)/.18);
-        cta.style.opacity=String(1-ctaOut);
-        cta.style.pointerEvents=ctaOut>.85?'none':'';
+        const ctaOut=smooth((p-.84)/.10);
+        cta.style.setProperty('opacity',String(1-ctaOut),'important');
+        cta.style.setProperty('visibility',ctaOut>.96?'hidden':'visible','important');
+        cta.style.setProperty('pointer-events',ctaOut>.80?'none':'auto','important');
       }
 
       if(headerLogo){
@@ -1219,7 +1245,10 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       trigger:area,
       start:'top top',
       end:'bottom bottom',
-      scrub:.35,
+      scrub:.45,
+      onEnter:()=>{ if(cta){cta.style.setProperty('visibility','visible','important');} },
+      onEnterBack:()=>{ if(cta){cta.style.setProperty('visibility','visible','important');} },
+      onLeave:()=>{ if(cta){cta.style.setProperty('opacity','0','important');cta.style.setProperty('visibility','hidden','important');cta.style.setProperty('pointer-events','none','important');} },
       onUpdate:self=>render(self.progress),
       onRefresh:self=>render(self.progress)
     });
@@ -1229,4 +1258,16 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   setTimeout(init,900);
 })();
 </script>
+
+<style id="locas-mobile-features-contrast-final">
+@media (max-width:767px){
+  .features-card .text-light,
+  .features-card p,
+  .features-card h2,
+  .features-card h3,
+  .features-card h4,
+  .features-card .p5,
+  .features-card .p7{color:#312726!important;}
+}
+</style>
 </body></html>
