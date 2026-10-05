@@ -1310,6 +1310,11 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 .locas-trips-all a{color:#312726;text-decoration:none;font-size:1rem;font-weight:650;}
 @media(max-width:767px){
   .jet_scroll-area{height:175svh!important;min-height:175svh!important;}
+  /* The original mobile .jet is a 100vh relative block after the scroll area.
+     Keep its visual/animation geometry but remove that extra screen from document flow. */
+  #flight .jet{margin-bottom:-100svh!important;}
+  #flight{padding-bottom:0!important;}
+  .locas-trips-section{margin-top:0!important;}
   .locas-trips-wrap{padding:4rem 0 5rem;}
   .locas-trips-head{margin-bottom:2.25rem;}
   .locas-trips-head h2{font-size:clamp(3.1rem,15vw,5.1rem);}
