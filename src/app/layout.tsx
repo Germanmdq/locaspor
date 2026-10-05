@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jesko Jets",
-  description: "Global private aviation",
+  title: "Locas por la Aventura",
+  description: "Viajes para mujeres, experiencias compartidas y aventuras pensadas para vivir el mundo de otra manera.",
+  icons: { icon: "/brand/locas-por-la-aventura.svg", apple: "/brand/locas-por-la-aventura.svg" },
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
