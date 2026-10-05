@@ -1219,22 +1219,24 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       kicker.style.transform=`translate3d(0,${((1-copyIn)*16-copyOut*12).toFixed(2)}px,0)`;
       tagline.style.transform=`translate3d(0,${((1-copyIn)*18+copyOut*10).toFixed(2)}px,0)`;
 
-      const intro=smooth((p-.10)/.10);
-      const settle=smooth((p-.20)/.16);
-      const move=smooth((p-.70)/.20);
-      let scale=.82+intro*.44;
-      if(p>.20) scale=1.26-settle*.14;
-      if(p>.70) scale=1.12-move*.50;
-      const y=-50-move*132;
-      const logoOut=smooth((p-.84)/.12);
-      logo.style.transform=`translate3d(-50%,${y}%,0) scale(${scale.toFixed(4)})`;
-      const logoIn=smooth((p-.10)/.10);
-      logo.style.opacity=String(logoIn*(1-logoOut));
+      /* Brand is visible as soon as the preloader clears, then physically travels into the header. */
+      const settle=smooth(p/.16);
+      const move=smooth((p-.56)/.30);
+      const headerRect=headerLogo ? headerLogo.getBoundingClientRect() : null;
+      const startCx=window.innerWidth*.5;
+      const startCy=initialHeight*.47;
+      const targetCx=headerRect ? headerRect.left+headerRect.width/2 : startCx;
+      const targetCy=headerRect ? headerRect.top+headerRect.height/2 : 56;
+      const dx=(targetCx-startCx)*move;
+      const dy=(targetCy-startCy)*move;
+      const scale=1.18-settle*.06-move*.58;
+      logo.style.transform=`translate3d(calc(-50% + ${dx.toFixed(2)}px),calc(-50% + ${dy.toFixed(2)}px),0) scale(${scale.toFixed(4)})`;
+      const hand=smooth((p-.88)/.08);
+      logo.style.opacity=String(1-hand);
 
-      const hand=smooth((p-.82)/.14);
       if(headerLogo){
         headerLogo.style.setProperty('opacity',String(hand),'important');
-        headerLogo.style.setProperty('transform',`translate3d(0,${(-8+8*hand).toFixed(2)}px,0) scale(${(.82+.18*hand).toFixed(3)})`,'important');
+        headerLogo.style.setProperty('transform','translate3d(0,0,0) scale(1)','important');
       }
 
       const storyOut=smooth((p-.90)/.08);
