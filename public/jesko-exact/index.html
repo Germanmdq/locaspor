@@ -1083,191 +1083,159 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 })();
 </script>
 
-<style id="locas-hero-mobile-v2">
-@media (max-width: 767px){
-  /* Let the window become the composition frame on phones */
-  #hero .hero-s_title-l,
-  #hero .hero-s_title-r{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
-  #hero .hero-w_bg_window,
-  #hero .hero-w_bg_window_w,
-  #hero .hero-w_bg_window_c{overflow:visible!important;}
-  #hero .hero-w_bg_window_c{position:relative!important;}
+<style id="locas-hero-mobile-v3">
+@media (max-width:767px){
+  #hero{height:200svh!important;min-height:200svh!important;overflow:clip!important;position:relative!important;}
+  #hero .hero_scroll-area{height:200svh!important;min-height:200svh!important;position:relative!important;overflow:visible!important;}
+  #hero .hero-w{position:sticky!important;top:0!important;height:100svh!important;min-height:100svh!important;overflow:hidden!important;}
+  #hero .hero-s{height:100svh!important;min-height:100svh!important;overflow:hidden!important;}
+  #hero .hero-s_title-l,#hero .hero-s_title-r{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
 
-  .hero-w{position:relative!important;}
-  #hero .hero-w,
   #hero .hero-w_bg,
+  #hero .hero-w_bg_back,
   #hero .hero-w_bg_front,
   #hero .hero-w_bg_front-over,
   #hero .hero-w_bg_window,
   #hero .hero-w_bg_window_w,
-  #hero .hero-w_bg_window_c,
-  .locas-window-story{
+  #hero .hero-w_bg_window_c{
     -webkit-backface-visibility:hidden!important;
     backface-visibility:hidden!important;
-    -webkit-transform:translateZ(0);
-    transform:translateZ(0);
+    will-change:transform,opacity;
   }
+
   .locas-window-story{
-    position:fixed;
-    inset:0;
-    z-index:20;
-    pointer-events:none;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:#fff;
+    position:fixed;inset:0;z-index:24;pointer-events:none;
+    display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;
+    -webkit-backface-visibility:hidden;backface-visibility:hidden;
   }
-  .locas-window-kicker,
-  .locas-window-tagline{
-    position:absolute;
-    left:9%;
-    right:9%;
-    margin:0;
-    text-wrap:balance;
-    text-shadow:0 1px 10px rgba(0,0,0,.16);
-    will-change:transform,opacity;
+  .locas-window-kicker,.locas-window-tagline{
+    position:absolute;left:8%;right:8%;margin:0;text-wrap:balance;
+    text-shadow:0 2px 12px rgba(0,0,0,.18);will-change:transform,opacity;
   }
-  .locas-window-kicker{
-    top:28%;
-    font-size:clamp(1.55rem,7.4vw,2.05rem);
-    line-height:.98;
-    letter-spacing:-.035em;
-    font-weight:600;
-  }
-  .locas-window-tagline{
-    top:59%;
-    font-size:clamp(1.15rem,5.5vw,1.55rem);
-    line-height:1.02;
-    letter-spacing:-.025em;
-    font-weight:600;
-  }
-  .locas-window-logo{
-    position:absolute;
-    top:47%;
-    left:50%;
-    width:min(52vw,205px);
-    transform:translate(-50%,-50%) scale(.72);
-    transform-origin:center;
-    will-change:transform,opacity;
-    filter:drop-shadow(0 2px 12px rgba(0,0,0,.12));
-  }
+  .locas-window-kicker{top:28%;font-size:clamp(1.55rem,7.4vw,2.05rem);line-height:.98;letter-spacing:-.035em;font-weight:650;}
+  .locas-window-tagline{top:59%;font-size:clamp(1.15rem,5.5vw,1.55rem);line-height:1.02;letter-spacing:-.025em;font-weight:650;}
+  .locas-window-logo{position:absolute;top:47%;left:50%;width:min(54vw,215px);transform-origin:center;will-change:transform,opacity;filter:drop-shadow(0 2px 12px rgba(0,0,0,.12));}
   .locas-window-logo svg{display:block;width:100%;height:auto;}
 
-  /* CTA gets its own clean zone below the copy */
-  .btn-cta-c{z-index:35!important;}
-  .btn-cta-c .btn-cta{position:relative!important;z-index:36!important;}
-
-  /* Header receives the logo after the hero hand-off */
-  .header_logo{opacity:0;transform:translateY(-8px) scale(.82);will-change:transform,opacity;}
-
-  /* Clean handoff into the content below the hero */
-  #hero + .section,
-  #hero ~ .section{position:relative;z-index:1;}
-  #about{padding-top:clamp(4rem,12vw,6rem)!important;}
-  #about .about-s_lead-text,
-  #about .about-s_lead-text_c{margin-top:0!important;transform:none!important;}
-  #about .about-s_lead-text .p2{line-height:1.03!important;}
-  #about .features-cms_list_item{margin-bottom:2.25rem!important;}
-  #about .features-card{transform:none!important;}
-  #about .features-card .text-light,
-  #about .features-card p,
-  #about .features-card h2,
-  #about .features-card h3,
-  #about .features-card h4{color:#312726!important;}
-
-  /* Keep the handed-off logo readable over both sky and light content */
-  .header_logo{
-    padding:.42rem .65rem!important;
-    border-radius:999px!important;
-    background:rgba(18,83,127,.30)!important;
-    -webkit-backdrop-filter:blur(8px)!important;
-    backdrop-filter:blur(8px)!important;
-  }
+  .header_logo{opacity:0;will-change:opacity,transform;padding:.42rem .65rem!important;border-radius:999px!important;background:rgba(18,83,127,.30)!important;-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important;}
+  .cta{z-index:35!important;}
+  .features-card .text-light,.features-card p,.features-card h2,.features-card h3,.features-card h4,.features-card .p5,.features-card .p7{color:#312726!important;}
 }
 </style>
-<script id="locas-hero-mobile-motion-v2">
+<script id="locas-hero-mobile-motion-v3">
 (function(){
-  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-  function smooth(t){t=clamp(t,0,1);return t*t*(3-2*t);}
+  if(window.__locasMobileHeroV3) return;
+  window.__locasMobileHeroV3=true;
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
+
   function init(){
     if(window.innerWidth>767) return;
     if(!window.gsap || !window.ScrollTrigger) return setTimeout(init,120);
     const hero=document.querySelector('#hero');
-    const area=document.querySelector('#hero .hero_scroll-area');
-    const windowC=document.querySelector('#hero .hero-w_bg_window_c');
+    const area=hero&&hero.querySelector('.hero_scroll-area');
+    const heroW=hero&&hero.querySelector('.hero-w');
+    const bg=hero&&hero.querySelector('.hero-w_bg');
+    const back=hero&&hero.querySelector('.hero-w_bg_back');
+    const frameLayers=hero ? [...hero.querySelectorAll('.hero-w_bg_front,.hero-w_bg_front-over,.hero-w_bg_window')] : [];
     const headerLogo=document.querySelector('.header_logo');
     const sourceLogo=document.querySelector('.header_logo .logo svg');
-    if(!hero||!area||!windowC||!sourceLogo) return setTimeout(init,120);
-    if(windowC.querySelector('.locas-window-story')) return;
+    const cta=document.querySelector('.cta');
+    if(!hero||!area||!heroW||!bg||!back||!sourceLogo) return setTimeout(init,150);
 
-    const story=document.createElement('div');
-    story.className='locas-window-story'; story.style.opacity='1';
-    story.innerHTML='<div class="locas-window-kicker">Viajes para mujeres</div><div class="locas-window-logo" aria-label="Locas por la Aventura"></div><div class="locas-window-tagline">Tu locura también es la nuestra</div>';
-    const logoHost=story.querySelector('.locas-window-logo');
-    logoHost.appendChild(sourceLogo.cloneNode(true));
-    document.body.appendChild(story);
+    /* Remove every original Jesko/Slater scroll animation that owns the mobile hero. */
+    ScrollTrigger.getAll().forEach(st=>{
+      const t=st.trigger, pin=st.pin;
+      if((t && (t===area || hero.contains(t))) || (pin && hero.contains(pin))){
+        try{st.kill(true)}catch(e){}
+      }
+    });
 
+    /* Clear transforms left behind by the killed timelines. */
+    [heroW,bg,back,...frameLayers].forEach(el=>{
+      if(!el) return;
+      el.style.removeProperty('transform');
+      el.style.removeProperty('opacity');
+      el.style.removeProperty('visibility');
+    });
+
+    let story=document.querySelector('.locas-window-story');
+    if(!story){
+      story=document.createElement('div');
+      story.className='locas-window-story';
+      story.innerHTML='<div class="locas-window-kicker">Viajes para mujeres</div><div class="locas-window-logo" aria-label="Locas por la Aventura"></div><div class="locas-window-tagline">Tu locura también es la nuestra</div>';
+      story.querySelector('.locas-window-logo').appendChild(sourceLogo.cloneNode(true));
+      document.body.appendChild(story);
+    }
     const kicker=story.querySelector('.locas-window-kicker');
     const tagline=story.querySelector('.locas-window-tagline');
-    const cta=document.querySelector('.cta');
+    const logo=story.querySelector('.locas-window-logo');
 
-    function render(p){
-      /* Mobile story synchronized to the ORIGINAL Jesko hero length.
-         Keep copy visible for most of the window opening, then hand off late. */
-      const intro=smooth(p/.09);
-      const settle=smooth((p-.09)/.14);
-      const travel=smooth((p-.72)/.18);
-      const hand=smooth((p-.84)/.12);
+    const initialHeight=window.innerHeight; // stable value: do not recalc when Safari chrome moves.
+    let ticking=false;
 
-      let scale=.80 + intro*.46;          // .80 -> 1.26
-      if(p>.09) scale=1.26 - settle*.14;  // 1.26 -> 1.12
-      if(p>.72) scale=1.12 - travel*.50;  // 1.12 -> .62
-      const y=-50 - travel*135;           // rise toward header
-      const logoOpacity=1-hand;
-      logoHost.style.transform=`translate(-50%, ${y}%) scale(${scale})`;
-      logoHost.style.opacity=String(logoOpacity);
+    function render(){
+      ticking=false;
+      const rect=hero.getBoundingClientRect();
+      const travel=Math.max(1, hero.offsetHeight-initialHeight);
+      const p=clamp((-rect.top)/travel,0,1);
 
-      const copyIn=smooth((p-.02)/.07);
-      const copyOut=smooth((p-.78)/.13);
+      /* Window: one owner only. Scale away, then fade BEFORE content below appears. */
+      const zoom=smooth(p/.78);
+      const frameFade=1-smooth((p-.62)/.18);
+      frameLayers.forEach(el=>{
+        el.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*1.45).toFixed(4)})`,'important');
+        el.style.setProperty('opacity',String(frameFade),'important');
+        el.style.setProperty('transform-origin','50% 50%','important');
+      });
+      back.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*.08).toFixed(4)})`,'important');
+      back.style.setProperty('opacity','1','important');
+
+      /* Copy remains online for most of the hero. */
+      const copyIn=smooth((p-.03)/.08);
+      const copyOut=smooth((p-.76)/.16);
       const copyOpacity=copyIn*(1-copyOut);
       kicker.style.opacity=String(copyOpacity);
       tagline.style.opacity=String(copyOpacity);
-      kicker.style.transform=`translateY(${(1-copyIn)*14 - copyOut*18}px)`;
-      tagline.style.transform=`translateY(${(1-copyIn)*18 + copyOut*12}px)`;
+      kicker.style.transform=`translate3d(0,${((1-copyIn)*16-copyOut*12).toFixed(2)}px,0)`;
+      tagline.style.transform=`translate3d(0,${((1-copyIn)*18+copyOut*10).toFixed(2)}px,0)`;
 
-      story.style.opacity=String(1-smooth((p-.90)/.08));
-      if(cta){
-        const ctaOut=smooth((p-.80)/.12);
-        cta.style.setProperty('opacity',String(1-ctaOut),'important');
-        cta.style.setProperty('visibility',ctaOut>.96?'hidden':'visible','important');
-        cta.style.setProperty('pointer-events',ctaOut>.80?'none':'auto','important');
+      const intro=smooth(p/.12);
+      const settle=smooth((p-.12)/.18);
+      const move=smooth((p-.70)/.20);
+      let scale=.82+intro*.44;
+      if(p>.12) scale=1.26-settle*.14;
+      if(p>.70) scale=1.12-move*.50;
+      const y=-50-move*132;
+      const logoOut=smooth((p-.84)/.12);
+      logo.style.transform=`translate3d(-50%,${y}%,0) scale(${scale.toFixed(4)})`;
+      logo.style.opacity=String(1-logoOut);
+
+      const hand=smooth((p-.82)/.14);
+      if(headerLogo){
+        headerLogo.style.setProperty('opacity',String(hand),'important');
+        headerLogo.style.setProperty('transform',`translate3d(0,${(-8+8*hand).toFixed(2)}px,0) scale(${(.82+.18*hand).toFixed(3)})`,'important');
       }
 
-      if(headerLogo){
-        const ho=hand;
-        headerLogo.style.opacity=String(ho);
-        headerLogo.style.transform=`translateY(${(-8+8*ho).toFixed(2)}px) scale(${(.82+.18*ho).toFixed(3)})`;
+      const storyOut=smooth((p-.90)/.08);
+      story.style.opacity=String(1-storyOut);
+      story.style.visibility=p>=.985?'hidden':'visible';
+
+      if(cta){
+        const co=smooth((p-.78)/.14);
+        cta.style.setProperty('opacity',String(1-co),'important');
+        cta.style.setProperty('visibility',co>.97?'hidden':'visible','important');
+        cta.style.setProperty('pointer-events',co>.75?'none':'auto','important');
       }
     }
 
-    render(0);
-    ScrollTrigger.create({
-      trigger:area,
-      start:'top top',
-      end:'bottom bottom',
-      scrub:true,
-      onEnter:()=>{ story.style.display='flex'; if(cta){cta.style.setProperty('visibility','visible','important');} },
-      onEnterBack:()=>{ story.style.display='flex'; if(cta){cta.style.setProperty('visibility','visible','important');} },
-      onLeave:()=>{ story.style.display='none'; if(cta){cta.style.setProperty('opacity','0','important');cta.style.setProperty('visibility','hidden','important');cta.style.setProperty('pointer-events','none','important');} },
-      onUpdate:self=>render(self.progress),
-      onRefresh:self=>render(self.progress)
-    });
-    window.addEventListener('resize',()=>{ if(window.innerWidth>767){headerLogo&&headerLogo.removeAttribute('style');} });
+    function request(){if(!ticking){ticking=true;requestAnimationFrame(render)}}
+    window.addEventListener('scroll',request,{passive:true});
+    window.addEventListener('orientationchange',()=>setTimeout(render,250),{passive:true});
+    render();
   }
-  window.addEventListener('load',init,{once:true});
-  setTimeout(init,900);
+  window.addEventListener('load',()=>setTimeout(init,700),{once:true});
+  setTimeout(init,1400);
 })();
 </script>
 
