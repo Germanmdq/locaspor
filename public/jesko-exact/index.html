@@ -1327,4 +1327,26 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 </style>
 
 
+
+<style id="locas-mobile-flight-gap-fix">
+@media (max-width:767px){
+  /* Remove hidden legacy aircraft/spec content from the document flow. */
+  #flight .spec-w,
+  #flight .spec-s,
+  #flight .spec-s_left,
+  #flight .spec-s_center,
+  #flight .spec-s_right,
+  #flight .b-desktop:has(.spec-w){
+    display:none!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  #flight > .container > .unit-96.b-mobile,
+  #flight .jet_scroll-area + .unit-96.b-mobile{display:none!important;height:0!important;margin:0!important;padding:0!important;}
+  #flight{padding-bottom:0!important;margin-bottom:0!important;}
+  #benefits.locas-trips-section{margin-top:0!important;}
+}
+</style>
 </body></html>
