@@ -584,19 +584,19 @@ $$$$$$$$$$                    /////////          �
           <div class="locas-trip-meta">5 días / 4 noches</div>
           <div class="locas-trip-row"><h3>Ushuaia</h3><span>↗</span></div>
           <div class="locas-trip-price">$3.690.000 <small>por persona</small></div>
-        </a>
+        </div>
         <div class="locas-trip-card">
           <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2026/06/Argentina_-photographic-tourism.jpg" alt="Catamarca"></div>
           <div class="locas-trip-meta">7 días / 6 noches</div>
           <div class="locas-trip-row"><h3>Catamarca</h3><span>↗</span></div>
           <div class="locas-trip-price">$3.840.000 <small>por persona</small></div>
-        </a>
+        </div>
         <div class="locas-trip-card">
           <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2020/03/6bfe18a2-1edd-4e61-85b9-f4185e5c382e.jpg" alt="Trevelin en temporada de Tulipanes"></div>
           <div class="locas-trip-meta">5 días / 4 noches</div>
           <div class="locas-trip-row"><h3>Trevelin</h3><span>↗</span></div>
           <div class="locas-trip-price">$3.390.000 <small>por persona</small></div>
-        </a>
+        </div>
       </div>
       
     </div>
@@ -1347,6 +1347,19 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   #flight .jet_scroll-area + .unit-96.b-mobile{display:none!important;height:0!important;margin:0!important;padding:0!important;}
   #flight{padding-bottom:0!important;margin-bottom:0!important;}
   #benefits.locas-trips-section{margin-top:0!important;}
+}
+</style>
+
+<style id="locas-mobile-trips-overlap-fix">
+@media (max-width:767px){
+  /* Pull the trips section up to meet the aircraft exit; remove the dead cream screen. */
+  #benefits.locas-trips-section{
+    margin-top:-92svh!important;
+    position:relative!important;
+    z-index:20!important;
+  }
+  #benefits.locas-trips-section > .container{padding-top:0!important;margin-top:0!important;}
+  #benefits .locas-trips-wrap{padding-top:2.75rem!important;}
 }
 </style>
 </body></html>
