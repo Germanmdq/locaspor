@@ -1022,7 +1022,7 @@ $$$$$$$$$$                    /////////          �
     setTimeout(refreshMotion, 1200);
   });
   window.addEventListener('pageshow', refreshMotion);
-  window.addEventListener('resize', function(){ clearTimeout(window.__locasResize); window.__locasResize=setTimeout(refreshMotion,180); });
+  window.addEventListener('resize', function(){ if(window.innerWidth<=767) return; clearTimeout(window.__locasResize); window.__locasResize=setTimeout(refreshMotion,180); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshMotion);
   document.querySelectorAll('img').forEach(function(img){ if(!img.complete) img.addEventListener('load', refreshMotion, {once:true}); });
 })();
@@ -1093,8 +1093,20 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   #hero .hero-w_bg_window_c{overflow:visible!important;}
   #hero .hero-w_bg_window_c{position:relative!important;}
 
-  #hero,.hero_scroll-area{min-height:320svh!important;}
   .hero-w{position:relative!important;}
+  #hero .hero-w,
+  #hero .hero-w_bg,
+  #hero .hero-w_bg_front,
+  #hero .hero-w_bg_front-over,
+  #hero .hero-w_bg_window,
+  #hero .hero-w_bg_window_w,
+  #hero .hero-w_bg_window_c,
+  .locas-window-story{
+    -webkit-backface-visibility:hidden!important;
+    backface-visibility:hidden!important;
+    -webkit-transform:translateZ(0);
+    transform:translateZ(0);
+  }
   .locas-window-story{
     position:fixed;
     inset:0;
@@ -1202,32 +1214,32 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     const cta=document.querySelector('.cta');
 
     function render(p){
-      /* Longer mobile story:
-         0-.12 enter/enlarge, .12-.55 hold, .55-.82 shrink/rise, .78+ handoff. */
-      const intro=smooth(p/.12);
-      const settle=smooth((p-.12)/.18);
-      const travel=smooth((p-.65)/.25);
-      const hand=smooth((p-.87)/.11);
+      /* Mobile story synchronized to the ORIGINAL Jesko hero length.
+         Keep copy visible for most of the window opening, then hand off late. */
+      const intro=smooth(p/.09);
+      const settle=smooth((p-.09)/.14);
+      const travel=smooth((p-.72)/.18);
+      const hand=smooth((p-.84)/.12);
 
       let scale=.80 + intro*.46;          // .80 -> 1.26
-      if(p>.12) scale=1.26 - settle*.14;  // 1.26 -> 1.12
-      if(p>.55) scale=1.12 - travel*.50;  // 1.12 -> .62
+      if(p>.09) scale=1.26 - settle*.14;  // 1.26 -> 1.12
+      if(p>.72) scale=1.12 - travel*.50;  // 1.12 -> .62
       const y=-50 - travel*135;           // rise toward header
       const logoOpacity=1-hand;
       logoHost.style.transform=`translate(-50%, ${y}%) scale(${scale})`;
       logoHost.style.opacity=String(logoOpacity);
 
-      const copyIn=smooth((p-.035)/.09);
-      const copyOut=smooth((p-.80)/.12);
+      const copyIn=smooth((p-.02)/.07);
+      const copyOut=smooth((p-.78)/.13);
       const copyOpacity=copyIn*(1-copyOut);
       kicker.style.opacity=String(copyOpacity);
       tagline.style.opacity=String(copyOpacity);
       kicker.style.transform=`translateY(${(1-copyIn)*14 - copyOut*18}px)`;
       tagline.style.transform=`translateY(${(1-copyIn)*18 + copyOut*12}px)`;
 
-      story.style.opacity=String(1-smooth((p-.94)/.05));
+      story.style.opacity=String(1-smooth((p-.90)/.08));
       if(cta){
-        const ctaOut=smooth((p-.84)/.10);
+        const ctaOut=smooth((p-.80)/.12);
         cta.style.setProperty('opacity',String(1-ctaOut),'important');
         cta.style.setProperty('visibility',ctaOut>.96?'hidden':'visible','important');
         cta.style.setProperty('pointer-events',ctaOut>.80?'none':'auto','important');
@@ -1245,10 +1257,10 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       trigger:area,
       start:'top top',
       end:'bottom bottom',
-      scrub:.45,
-      onEnter:()=>{ if(cta){cta.style.setProperty('visibility','visible','important');} },
-      onEnterBack:()=>{ if(cta){cta.style.setProperty('visibility','visible','important');} },
-      onLeave:()=>{ if(cta){cta.style.setProperty('opacity','0','important');cta.style.setProperty('visibility','hidden','important');cta.style.setProperty('pointer-events','none','important');} },
+      scrub:true,
+      onEnter:()=>{ story.style.display='flex'; if(cta){cta.style.setProperty('visibility','visible','important');} },
+      onEnterBack:()=>{ story.style.display='flex'; if(cta){cta.style.setProperty('visibility','visible','important');} },
+      onLeave:()=>{ story.style.display='none'; if(cta){cta.style.setProperty('opacity','0','important');cta.style.setProperty('visibility','hidden','important');cta.style.setProperty('pointer-events','none','important');} },
       onUpdate:self=>render(self.progress),
       onRefresh:self=>render(self.progress)
     });
