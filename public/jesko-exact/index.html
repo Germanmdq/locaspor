@@ -1141,7 +1141,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     const heroW=hero&&hero.querySelector('.hero-w');
     const bg=hero&&hero.querySelector('.hero-w_bg');
     const back=hero&&hero.querySelector('.hero-w_bg_back');
-    const frameLayers=hero ? [...hero.querySelectorAll('.hero-w_bg_front,.hero-w_bg_front-over,.hero-w_bg_window')] : [];
+    const frameLayers=hero ? [...hero.querySelectorAll('.hero-w_bg_front,.hero-w_bg_front-over')] : [];
     const headerLogo=document.querySelector('.header_logo');
     const sourceLogo=document.querySelector('.header_logo .logo svg');
     const cta=document.querySelector('.cta');
@@ -1188,7 +1188,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       const zoom=smooth(p/.78);
       const frameFade=1-smooth((p-.62)/.18);
       frameLayers.forEach(el=>{
-        el.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*1.45).toFixed(4)})`,'important');
+        el.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*.58).toFixed(4)})`,'important');
         el.style.setProperty('opacity',String(frameFade),'important');
         el.style.setProperty('transform-origin','50% 50%','important');
       });
@@ -1257,12 +1257,18 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
 <style id="locas-mobile-hide-window-knob">
 @media (max-width:767px){
+  #hero .hero-w_bg_window,
+  #hero .hero-w_bg_window_w,
+  #hero .hero-w_bg_window_c,
+  #hero .hero-w_bg_window_bg_,
+  #hero .hero-w_bg_window_bg,
   #hero .hero-w_bg_window_knob_,
   #hero .hero-w_bg_window_knob-2,
   #hero .hero-w_bg_window_knob{
     display:none!important;
     visibility:hidden!important;
     opacity:0!important;
+    pointer-events:none!important;
   }
 }
 </style>
