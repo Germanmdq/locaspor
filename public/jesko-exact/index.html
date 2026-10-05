@@ -1082,4 +1082,151 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   setTimeout(initLocasJetRelease,600);
 })();
 </script>
+
+<style id="locas-hero-mobile-v2">
+@media (max-width: 767px){
+  /* Let the window become the composition frame on phones */
+  #hero .hero-s_title-l,
+  #hero .hero-s_title-r{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
+  #hero .hero-w_bg_window,
+  #hero .hero-w_bg_window_w,
+  #hero .hero-w_bg_window_c{overflow:visible!important;}
+  #hero .hero-w_bg_window_c{position:relative!important;}
+
+  .hero-w{position:relative!important;}
+  .locas-window-story{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    pointer-events:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+  }
+  .locas-window-kicker,
+  .locas-window-tagline{
+    position:absolute;
+    left:9%;
+    right:9%;
+    margin:0;
+    text-wrap:balance;
+    text-shadow:0 1px 10px rgba(0,0,0,.16);
+    will-change:transform,opacity;
+  }
+  .locas-window-kicker{
+    top:28%;
+    font-size:clamp(1.55rem,7.4vw,2.05rem);
+    line-height:.98;
+    letter-spacing:-.035em;
+    font-weight:600;
+  }
+  .locas-window-tagline{
+    top:59%;
+    font-size:clamp(1.15rem,5.5vw,1.55rem);
+    line-height:1.02;
+    letter-spacing:-.025em;
+    font-weight:600;
+  }
+  .locas-window-logo{
+    position:absolute;
+    top:47%;
+    left:50%;
+    width:min(52vw,205px);
+    transform:translate(-50%,-50%) scale(.72);
+    transform-origin:center;
+    will-change:transform,opacity;
+    filter:drop-shadow(0 2px 12px rgba(0,0,0,.12));
+  }
+  .locas-window-logo svg{display:block;width:100%;height:auto;}
+
+  /* CTA gets its own clean zone below the copy */
+  .btn-cta-c{z-index:35!important;}
+  .btn-cta-c .btn-cta{position:relative!important;z-index:36!important;}
+
+  /* Header receives the logo after the hero hand-off */
+  .header_logo{opacity:0;transform:translateY(-8px) scale(.82);will-change:transform,opacity;}
+}
+</style>
+<script id="locas-hero-mobile-motion-v2">
+(function(){
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function smooth(t){t=clamp(t,0,1);return t*t*(3-2*t);}
+  function init(){
+    if(window.innerWidth>767) return;
+    if(!window.gsap || !window.ScrollTrigger) return setTimeout(init,120);
+    const hero=document.querySelector('#hero');
+    const area=document.querySelector('#hero .hero_scroll-area');
+    const windowC=document.querySelector('#hero .hero-w_bg_window_c');
+    const headerLogo=document.querySelector('.header_logo');
+    const sourceLogo=document.querySelector('.header_logo .logo svg');
+    if(!hero||!area||!windowC||!sourceLogo) return setTimeout(init,120);
+    if(windowC.querySelector('.locas-window-story')) return;
+
+    const story=document.createElement('div');
+    story.className='locas-window-story'; story.style.opacity='1';
+    story.innerHTML='<div class="locas-window-kicker">Viajes para mujeres</div><div class="locas-window-logo" aria-label="Locas por la Aventura"></div><div class="locas-window-tagline">Tu locura también es la nuestra</div>';
+    const logoHost=story.querySelector('.locas-window-logo');
+    logoHost.appendChild(sourceLogo.cloneNode(true));
+    document.body.appendChild(story);
+
+    const kicker=story.querySelector('.locas-window-kicker');
+    const tagline=story.querySelector('.locas-window-tagline');
+    const cta=document.querySelector('.btn-cta-c');
+
+    function render(p){
+      /* 0-.16: appear and enlarge. .16-.44: hero logo at full emphasis.
+         .44-.72: shrink and rise. .72+: hand off to header. */
+      const intro=smooth(p/.16);
+      const settle=smooth((p-.16)/.22);
+      const travel=smooth((p-.44)/.30);
+      const hand=smooth((p-.68)/.18);
+
+      let scale=.78 + intro*.46;          // .78 -> 1.24
+      if(p>.16) scale=1.24 - settle*.16;  // 1.24 -> 1.08
+      if(p>.44) scale=1.08 - travel*.48;  // 1.08 -> .60
+      const y=-50 - travel*135;           // rise toward header
+      const logoOpacity=1-hand;
+      logoHost.style.transform=`translate(-50%, ${y}%) scale(${scale})`;
+      logoHost.style.opacity=String(logoOpacity);
+
+      const copyIn=smooth((p-.06)/.12);
+      const copyOut=smooth((p-.48)/.18);
+      const copyOpacity=copyIn*(1-copyOut);
+      kicker.style.opacity=String(copyOpacity);
+      tagline.style.opacity=String(copyOpacity);
+      kicker.style.transform=`translateY(${(1-copyIn)*14 - copyOut*18}px)`;
+      tagline.style.transform=`translateY(${(1-copyIn)*18 + copyOut*12}px)`;
+
+      story.style.opacity=String(1-smooth((p-.78)/.12));
+      if(cta){
+        const ctaOut=smooth((p-.66)/.18);
+        cta.style.opacity=String(1-ctaOut);
+        cta.style.pointerEvents=ctaOut>.85?'none':'';
+      }
+
+      if(headerLogo){
+        const ho=hand;
+        headerLogo.style.opacity=String(ho);
+        headerLogo.style.transform=`translateY(${(-8+8*ho).toFixed(2)}px) scale(${(.82+.18*ho).toFixed(3)})`;
+      }
+    }
+
+    render(0);
+    ScrollTrigger.create({
+      trigger:area,
+      start:'top top',
+      end:'bottom bottom',
+      scrub:.35,
+      onUpdate:self=>render(self.progress),
+      onRefresh:self=>render(self.progress)
+    });
+    window.addEventListener('resize',()=>{ if(window.innerWidth>767){headerLogo&&headerLogo.removeAttribute('style');} });
+  }
+  window.addEventListener('load',init,{once:true});
+  setTimeout(init,900);
+})();
+</script>
 </body></html>
