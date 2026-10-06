@@ -587,6 +587,13 @@ $$$$$$$$$$                    /////////          �
           <div class="locas-trip-row"><h3>Ushuaia</h3><span>↗</span></div>
           <div class="locas-trip-motion-link">Ver experiencia →</div>
         </article>
+        <article class="locas-trip-card locas-motion-card locas-motion-card--puerto-rico" data-motion-trip="puerto-rico">
+          <div class="locas-motion-media">
+            <video class="locas-trip-motion-video" src="/trips/puerto-rico/puerto-rico-motion-mobile.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Puerto Rico de Locas por la Aventura"></video>
+          </div>
+          <div class="locas-trip-row"><h3>Puerto Rico</h3><span>↗</span></div>
+          <div class="locas-trip-motion-link">Ver experiencia →</div>
+        </article>
         <div class="locas-trip-card">
           <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2026/06/Argentina_-photographic-tourism.jpg" alt="Catamarca"></div>
           <div class="locas-trip-meta">7 días / 6 noches</div>
@@ -1421,14 +1428,19 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 </style>
 <script id="locas-motion-trip-prototype-js">
 (function(){
-  const video=document.querySelector('.locas-trip-motion-video');
-  if(!video) return;
-  video.muted=true;
-  video.playsInline=true;
-  const io=new IntersectionObserver(([entry])=>{
-    if(entry.isIntersecting) video.play().catch(()=>{}); else video.pause();
+  const videos=[...document.querySelectorAll('.locas-trip-motion-video')];
+  if(!videos.length) return;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      const video=entry.target;
+      if(entry.isIntersecting) video.play().catch(()=>{}); else video.pause();
+    });
   },{threshold:.15});
-  io.observe(video);
+  videos.forEach((video)=>{
+    video.muted=true;
+    video.playsInline=true;
+    io.observe(video);
+  });
 })();
 </script>
 </body></html>
