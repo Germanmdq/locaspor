@@ -579,12 +579,22 @@ $$$$$$$$$$                    /////////          �
         <p>Elegí el próximo lugar donde vas a vivir algo que después vas a contar mil veces.</p>
       </div>
       <div class="locas-trips-grid">
-        <div class="locas-trip-card">
-          <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2020/03/AFB3889D-DC0B-44EA-8E6A-E9B8E3B9C8F9_1_105_c.jpeg" alt="Ushuaia"></div>
-          <div class="locas-trip-meta">5 días / 4 noches</div>
-          <div class="locas-trip-row"><h3>Ushuaia</h3><span>↗</span></div>
-          <div class="locas-trip-price">$3.690.000 <small>por persona</small></div>
-        </div>
+        <article class="locas-trip-card locas-motion-card locas-motion-card--ushuaia" data-motion-trip="ushuaia">
+          <div class="locas-motion-media">
+            <div class="locas-motion-frame locas-motion-frame--1"><img src="/trips/ushuaia/04-Ushuaia-1.jpg" alt="Ushuaia, Patagonia"></div>
+            <div class="locas-motion-frame locas-motion-frame--2"><img src="/trips/ushuaia/081F0369-6E37-43B6-8D00-019FC934CC15_1_105_c.jpeg" alt="Experiencia Locas en Ushuaia"></div>
+            <div class="locas-motion-frame locas-motion-frame--3"><img src="/trips/ushuaia/346333CE-4A6A-4407-83F6-FEB381B13028_1_105_c.jpeg" alt="Aventura en Ushuaia"></div>
+            <div class="locas-motion-shade"></div>
+            <div class="locas-motion-index">01 / USH</div>
+            <div class="locas-motion-title"><span>USHUAIA</span></div>
+            <div class="locas-motion-line"></div>
+            <div class="locas-motion-copy">
+              <div class="locas-motion-kicker">FIN DEL MUNDO, PRINCIPIO DE TODO.</div>
+              <p>Mujeres de todas partes llegan al fin del mundo para vivirlo juntas.</p>
+            </div>
+            <div class="locas-motion-cta"><span>5 días / 4 noches</span><strong>Ver experiencia ↗</strong></div>
+          </div>
+        </article>
         <div class="locas-trip-card">
           <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2026/06/Argentina_-photographic-tourism.jpg" alt="Catamarca"></div>
           <div class="locas-trip-meta">7 días / 6 noches</div>
@@ -1400,4 +1410,49 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   #flight .jet{margin-bottom:0!important;}
 }
 </style>
+
+<style id="locas-motion-trip-prototype">
+.locas-motion-card{border:0!important;padding:0!important;position:relative;overflow:visible;background:transparent!important;}
+.locas-motion-media{position:relative;aspect-ratio:4/5;overflow:hidden;background:#0b1c28;isolation:isolate;}
+.locas-motion-frame{position:absolute;inset:0;overflow:hidden;will-change:transform,clip-path,opacity;}
+.locas-motion-frame img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform;}
+.locas-motion-frame--1{z-index:1;clip-path:inset(0 0 0 0);}
+.locas-motion-frame--2{z-index:2;clip-path:inset(100% 0 0 0);}
+.locas-motion-frame--3{z-index:3;clip-path:inset(100% 0 0 0);}
+.locas-motion-shade{position:absolute;inset:0;z-index:4;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.05) 46%,rgba(0,0,0,.68));pointer-events:none;}
+.locas-motion-index,.locas-motion-title,.locas-motion-copy,.locas-motion-cta,.locas-motion-line{position:absolute;z-index:5;color:#fff;}
+.locas-motion-index{top:1rem;left:1rem;font-size:.67rem;letter-spacing:.12em;}
+.locas-motion-title{left:1rem;right:1rem;top:46%;overflow:hidden;}
+.locas-motion-title span{display:block;font-size:clamp(3.1rem,13vw,5.6rem);line-height:.82;letter-spacing:-.065em;font-weight:650;transform:translateY(115%);will-change:transform;}
+.locas-motion-line{left:1rem;right:1rem;bottom:9.3rem;height:1px;background:rgba(255,255,255,.6);transform:scaleX(0);transform-origin:left;}
+.locas-motion-copy{left:1rem;right:1rem;bottom:4.2rem;opacity:0;transform:translateY(18px);}
+.locas-motion-kicker{font-size:.72rem;font-weight:700;letter-spacing:.06em;margin-bottom:.42rem;}
+.locas-motion-copy p{font-size:.93rem;line-height:1.25;max-width:28rem;margin:0;color:#fff!important;}
+.locas-motion-cta{left:1rem;right:1rem;bottom:1rem;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;opacity:0;transform:translateY(14px);}
+.locas-motion-cta strong{font-size:.82rem;font-weight:650;}
+@media(min-width:768px){
+  .locas-motion-media{aspect-ratio:3/4;}
+  .locas-motion-title span{font-size:clamp(3rem,5vw,5.7rem);}
+}
+</style>
+<script id="locas-motion-trip-prototype-js">
+(function(){
+ const card=document.querySelector('[data-motion-trip="ushuaia"]'); if(!card) return;
+ const media=card.querySelector('.locas-motion-media'), f1=card.querySelector('.locas-motion-frame--1'), f2=card.querySelector('.locas-motion-frame--2'), f3=card.querySelector('.locas-motion-frame--3');
+ const title=card.querySelector('.locas-motion-title span'), line=card.querySelector('.locas-motion-line'), copy=card.querySelector('.locas-motion-copy'), cta=card.querySelector('.locas-motion-cta');
+ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)); const sm=t=>{t=clamp(t);return t*t*(3-2*t)};
+ let raf=false;
+ function render(){raf=false; const r=card.getBoundingClientRect(); const vh=innerHeight; const p=clamp((vh-r.top)/(vh+r.height*.55));
+   const a=sm((p-.12)/.22), b=sm((p-.40)/.24), c=sm((p-.68)/.18);
+   f1.querySelector('img').style.transform=`scale(${(1.08-a*.05).toFixed(3)}) translateY(${(-a*2).toFixed(2)}%)`;
+   f2.style.clipPath=`inset(${(100-a*100).toFixed(2)}% 0 0 0)`; f2.querySelector('img').style.transform=`scale(${(1.05-b*.03).toFixed(3)})`;
+   f3.style.clipPath=`inset(${(100-b*100).toFixed(2)}% 0 0 0)`; f3.querySelector('img').style.transform=`scale(${(1.04-c*.04).toFixed(3)})`;
+   title.style.transform=`translateY(${(115-(sm((p-.18)/.18))*115).toFixed(2)}%)`;
+   line.style.transform=`scaleX(${sm((p-.34)/.18).toFixed(3)})`;
+   const txt=sm((p-.48)/.18); copy.style.opacity=txt; copy.style.transform=`translateY(${(18-18*txt).toFixed(2)}px)`;
+   const ct=sm((p-.58)/.18); cta.style.opacity=ct; cta.style.transform=`translateY(${(14-14*ct).toFixed(2)}px)`;
+ }
+ function req(){if(!raf){raf=true;requestAnimationFrame(render)}}; addEventListener('scroll',req,{passive:true}); addEventListener('resize',req,{passive:true}); render();
+})();
+</script>
 </body></html>
