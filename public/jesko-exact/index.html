@@ -1423,4 +1423,38 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   #flight .jet{margin-bottom:0!important;}
 }
 </style>
+<style id="locas-motion-trip-prototype">
+.locas-motion-card{border:0!important;padding:0!important;position:relative;background:transparent!important;}
+.locas-motion-media{position:relative;aspect-ratio:9/16;overflow:hidden;background:#ede7dc;margin-bottom:1rem;}
+.locas-trip-motion-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#ede7dc;}
+.locas-trip-motion-link{margin-top:1rem;font-size:.9rem;font-weight:650;letter-spacing:-.01em;}
+@media(max-width:767px){
+  .locas-motion-card{width:calc(100% + 2rem);margin-left:-1rem;}
+  .locas-motion-card .locas-motion-media{width:100%;aspect-ratio:9/16;margin-bottom:1.1rem;}
+  .locas-motion-card .locas-trip-meta,
+  .locas-motion-card .locas-trip-row,
+  .locas-motion-card .locas-trip-motion-link{margin-left:1rem;margin-right:1rem;}
+}
+@media(min-width:768px){
+  .locas-motion-media{aspect-ratio:9/16;}
+}
+</style>
+<script id="locas-motion-trip-prototype-js">
+(function(){
+  const videos=[...document.querySelectorAll('.locas-trip-motion-video')];
+  if(!videos.length) return;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      const video=entry.target;
+      if(entry.isIntersecting) video.play().catch(()=>{}); else video.pause();
+    });
+  },{threshold:.15});
+  videos.forEach((video)=>{
+    video.muted=true;
+    video.playsInline=true;
+    io.observe(video);
+  });
+})();
+</script>
+
 </body></html>
