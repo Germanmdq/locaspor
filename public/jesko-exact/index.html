@@ -455,12 +455,16 @@ $$$$$$$$$$                    /////////          �
           <div class="locas-trip-row"><h3>Grecia</h3><span>↗</span></div>
           <div class="locas-trip-motion-link">Ver experiencia →</div>
         </article>
-        <div class="locas-trip-card">
-          <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2026/06/Argentina_-photographic-tourism.jpg" alt="Catamarca"></div>
-          <div class="locas-trip-meta">7 días / 6 noches</div>
+        <article class="locas-trip-card locas-motion-card locas-motion-card--catamarca" data-motion-trip="catamarca">
+          <div class="locas-motion-media">
+            <video class="locas-trip-motion-video" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Catamarca de Locas por la Aventura">
+              <source media="(min-width: 768px)" src="/trips/catamarca/catamarca-motion-desktop.mp4" type="video/mp4">
+              <source src="/trips/catamarca/catamarca-motion-mobile.mp4" type="video/mp4">
+            </video>
+          </div>
           <div class="locas-trip-row"><h3>Catamarca</h3><span>↗</span></div>
-          <div class="locas-trip-price">$3.840.000 <small>por persona</small></div>
-        </div>
+          <div class="locas-trip-motion-link">Ver experiencia →</div>
+        </article>
         <div class="locas-trip-card">
           <div class="locas-trip-image"><img src="https://locasporlaaventura.com.ar/wp-content/uploads/2020/03/6bfe18a2-1edd-4e61-85b9-f4185e5c382e.jpg" alt="Trevelin en temporada de Tulipanes"></div>
           <div class="locas-trip-meta">5 días / 4 noches</div>
@@ -1317,6 +1321,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 }
 @media(min-width:768px){
   .locas-motion-media{aspect-ratio:9/16;}
+  .locas-motion-card--catamarca .locas-motion-media{aspect-ratio:16/9;}
 }
 </style>
 <script id="locas-motion-trip-prototype-js">
