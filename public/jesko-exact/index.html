@@ -1388,9 +1388,21 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 <style id="locas-preloader-handoff-fix">
 @media (max-width:767px){
   .header_logo,.header_logo *{box-shadow:none!important;}
-  /* Never show the header logo floating in the middle before the user starts scrolling. */
-  body:not(.locas-has-scrolled) .header_logo{opacity:0!important;visibility:hidden!important;}
-  body.locas-has-scrolled .header_logo{opacity:1!important;visibility:visible!important;}
+  /* Keep the brand in one exact viewport position from the first hero frame onward. */
+  .header_logo{
+    position:fixed!important;
+    top:24px!important;
+    left:50%!important;
+    right:auto!important;
+    width:132px!important;
+    max-width:132px!important;
+    margin:0!important;
+    opacity:1!important;
+    visibility:visible!important;
+    transform:translate3d(-50%,0,0)!important;
+    transform-origin:50% 50%!important;
+    z-index:120!important;
+  }
 }
 </style>
 <script id="locas-preloader-handoff-script">
@@ -1413,9 +1425,6 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   requestAnimationFrame(wait);
   setTimeout(finish,5500);
 
-  const updateScrollState=()=>document.body.classList.toggle('locas-has-scrolled',window.scrollY>12);
-  updateScrollState();
-  window.addEventListener('scroll',updateScrollState,{passive:true});
 })();
 </script>
 
