@@ -1218,9 +1218,28 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
     function render(){
       ticking=false;
-      const rect=hero.getBoundingClientRect();
-      const travel=Math.max(1, hero.offsetHeight-initialHeight);
-      const p=clamp((-rect.top)/travel,0,1);
+      const areaRect=area.getBoundingClientRect();
+      const travel=Math.max(1, area.offsetHeight-initialHeight);
+      const p=clamp((-areaRect.top)/travel,0,1);
+
+      /* Hard visibility guard: once the mobile hero scroll area has finished,
+         no fixed hero copy/window element may remain over the following sections. */
+      const heroActive=areaRect.bottom>0 && areaRect.top<initialHeight;
+      if(!heroActive && areaRect.top<0){
+        story.style.opacity='0';
+        story.style.visibility='hidden';
+        if(headerLogo){
+          headerLogo.style.setProperty('opacity','1','important');
+          headerLogo.style.setProperty('transform','translate3d(0,0,0) scale(1)','important');
+        }
+        frameLayers.forEach(el=>el.style.setProperty('opacity','0','important'));
+        if(cta){
+          cta.style.setProperty('opacity','0','important');
+          cta.style.setProperty('visibility','hidden','important');
+          cta.style.setProperty('pointer-events','none','important');
+        }
+        return;
+      }
 
       /* Window: one owner only. Scale away, then fade BEFORE content below appears. */
       const zoom=smooth(p/.78);
