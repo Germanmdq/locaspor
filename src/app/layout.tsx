@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Locas por la Aventura",
   description: "Viajes para mujeres, experiencias compartidas y aventuras pensadas para vivir el mundo de otra manera.",
-  icons: { icon: "/brand/plane-favicon.svg", apple: "/brand/plane-favicon.svg" },
+  icons: { icon: "/brand/plane-favicon-v2.svg", apple: "/brand/plane-favicon-v2.svg" },
 };
 
 export default function RootLayout({
