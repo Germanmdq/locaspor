@@ -428,7 +428,7 @@ $$$$$$$$$$                    /////////          �
       <div class="locas-trips-grid">
         <article class="locas-trip-card locas-motion-card locas-motion-card--ushuaia" data-motion-trip="ushuaia">
           <div class="locas-motion-media">
-            <video class="locas-trip-motion-video" src="/trips/ushuaia/ushuaia-motion-mobile.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Ushuaia de Locas por la Aventura"></video>
+            <video class="locas-trip-motion-video" src="/trips/ushuaia/ushuaia-motion-mobile.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Experiencia Ushuaia de Locas por la Aventura"></video>
           </div>
           <div class="locas-trip-meta">5 días / 4 noches</div>
           <div class="locas-trip-row"><h3>Ushuaia</h3><span>↗</span></div>
@@ -436,28 +436,28 @@ $$$$$$$$$$                    /////////          �
         </article>
         <article class="locas-trip-card locas-motion-card locas-motion-card--puerto-rico" data-motion-trip="puerto-rico">
           <div class="locas-motion-media">
-            <video class="locas-trip-motion-video" src="/trips/puerto-rico/puerto-rico-motion-mobile.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Puerto Rico de Locas por la Aventura"></video>
+            <video class="locas-trip-motion-video" src="/trips/puerto-rico/puerto-rico-motion-mobile.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Experiencia Puerto Rico de Locas por la Aventura"></video>
           </div>
           <div class="locas-trip-row"><h3>Puerto Rico</h3><span>↗</span></div>
           <div class="locas-trip-motion-link">Ver experiencia →</div>
         </article>
         <article class="locas-trip-card locas-motion-card locas-motion-card--italia" data-motion-trip="italia">
           <div class="locas-motion-media">
-            <video class="locas-trip-motion-video" src="/trips/italia/italia-motion-mobile.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Italia de Locas por la Aventura"></video>
+            <video class="locas-trip-motion-video" src="/trips/italia/italia-motion-mobile.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Experiencia Italia de Locas por la Aventura"></video>
           </div>
           <div class="locas-trip-row"><h3>Italia</h3><span>↗</span></div>
           <div class="locas-trip-motion-link">Ver experiencia →</div>
         </article>
         <article class="locas-trip-card locas-motion-card locas-motion-card--grecia" data-motion-trip="grecia">
           <div class="locas-motion-media">
-            <video class="locas-trip-motion-video" src="/trips/grecia/grecia-motion-mobile.mp4" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Grecia de Locas por la Aventura"></video>
+            <video class="locas-trip-motion-video" src="/trips/grecia/grecia-motion-mobile.mp4" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Experiencia Grecia de Locas por la Aventura"></video>
           </div>
           <div class="locas-trip-row"><h3>Grecia</h3><span>↗</span></div>
           <div class="locas-trip-motion-link">Ver experiencia →</div>
         </article>
         <article class="locas-trip-card locas-motion-card locas-motion-card--catamarca" data-motion-trip="catamarca">
           <div class="locas-motion-media">
-            <video class="locas-trip-motion-video" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback aria-label="Experiencia Catamarca de Locas por la Aventura">
+            <video class="locas-trip-motion-video" autoplay muted loop playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-label="Experiencia Catamarca de Locas por la Aventura">
               <source media="(min-width: 768px)" src="/trips/catamarca/catamarca-motion-desktop.mp4" type="video/mp4">
               <source src="/trips/catamarca/catamarca-motion-mobile.mp4" type="video/mp4">
             </video>
@@ -1012,7 +1012,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
   .header_logo{opacity:0!important;will-change:opacity,transform;padding:0!important;border-radius:0!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;}
   .cta{z-index:35!important;}
-  .features-card .text-light,.features-card p,.features-card h2,.features-card h3,.features-card h4,.features-card .p5,.features-card .p7{color:#312726!important;}
+  .features-card .text-light,.features-card p,.features-card h2,.features-card h3,.features-card h4,.features-card .p5,.features-card .p7{color:#fff!important;}
 }
 </style>
 <script id="locas-hero-mobile-motion-v3">
@@ -1086,10 +1086,10 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       const p=clamp((-rect.top)/travel,0,1);
 
       const zoom=smooth(p/.78);
-      const frameFade=1-smooth((p-.62)/.18);
       frameLayers.forEach(el=>{
         el.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*.58).toFixed(4)})`,'important');
-        el.style.setProperty('opacity',String(frameFade),'important');
+        /* Keep the physical window frame fully opaque. Fading it exposed the sky through the inner rim. */
+        el.style.setProperty('opacity','1','important');
         el.style.setProperty('transform-origin','50% 50%','important');
       });
       back.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*.08).toFixed(4)})`,'important');
@@ -1134,7 +1134,6 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     window.addEventListener('scroll',request,{passive:true});
     window.addEventListener('orientationchange',()=>setTimeout(render,250),{passive:true});
     render();
-    try{ScrollTrigger.refresh(true)}catch(e){}
 
     /* First load must not reveal the hero before its eager images are decoded. */
     const imgs=[...hero.querySelectorAll('img')].filter(img=>img.loading!=='lazy');
@@ -1157,7 +1156,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   .features-card h3,
   .features-card h4,
   .features-card .p5,
-  .features-card .p7{color:#312726!important;}
+  .features-card .p7{color:#fff!important;}
 }
 </style>
 
@@ -1328,16 +1327,39 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 (function(){
   const videos=[...document.querySelectorAll('.locas-trip-motion-video')];
   if(!videos.length) return;
-  const io=new IntersectionObserver((entries)=>{
+
+  // Load videos before the trips section reaches the viewport, so the first scroll does not reveal blank cards.
+  const preloadIO=new IntersectionObserver((entries,observer)=>{
+    entries.forEach((entry)=>{
+      if(!entry.isIntersecting) return;
+      const video=entry.target;
+      video.preload='auto';
+      try{video.load()}catch(e){}
+      observer.unobserve(video);
+    });
+  },{rootMargin:'120% 0px 120% 0px',threshold:0.01});
+
+  const playIO=new IntersectionObserver((entries)=>{
     entries.forEach((entry)=>{
       const video=entry.target;
-      if(entry.isIntersecting) video.play().catch(()=>{}); else video.pause();
+      if(entry.isIntersecting){
+        video.play().catch(()=>{});
+      }else{
+        video.pause();
+      }
     });
-  },{threshold:.15});
-  videos.forEach((video)=>{
+  },{rootMargin:'10% 0px 10% 0px',threshold:0.01});
+
+  videos.forEach((video,index)=>{
     video.muted=true;
     video.playsInline=true;
-    io.observe(video);
+    if(index<2){
+      video.preload='auto';
+      try{video.load()}catch(e){}
+    }else{
+      preloadIO.observe(video);
+    }
+    playIO.observe(video);
   });
 })();
 </script>
