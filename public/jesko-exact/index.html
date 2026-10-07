@@ -1156,10 +1156,9 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   }
   .locas-window-kicker{top:28%;font-size:clamp(1.55rem,7.4vw,2.05rem);line-height:.98;letter-spacing:-.035em;font-weight:650;}
   .locas-window-tagline{top:59%;font-size:clamp(1.15rem,5.5vw,1.55rem);line-height:1.02;letter-spacing:-.025em;font-weight:650;}
-  .locas-window-logo{position:absolute;top:47%;left:50%;width:min(54vw,215px);transform-origin:center;will-change:transform,opacity;filter:drop-shadow(0 2px 12px rgba(0,0,0,.12));}
-  .locas-window-logo svg{display:block;width:100%;height:auto;}
+  .locas-window-logo{display:none!important;}
 
-  .header_logo{opacity:0;will-change:opacity,transform;padding:0!important;border-radius:0!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;}
+  .header_logo{opacity:1!important;will-change:auto;padding:0!important;border-radius:0!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;transform:none!important;}
   .cta{z-index:35!important;}
   .features-card .text-light,.features-card p,.features-card h2,.features-card h3,.features-card h4,.features-card .p5,.features-card .p7{color:#312726!important;}
 }
@@ -1170,10 +1169,11 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   window.__locasMobileHeroV3=true;
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
+  let initialized=false;
 
-  function init(){
-    if(window.innerWidth>767) return;
-    if(!window.gsap || !window.ScrollTrigger) return setTimeout(init,120);
+  async function init(){
+    if(initialized || window.innerWidth>767) return;
+    if(!window.gsap || !window.ScrollTrigger) return setTimeout(init,80);
     const hero=document.querySelector('#hero');
     const area=hero&&hero.querySelector('.hero_scroll-area');
     const heroW=hero&&hero.querySelector('.hero-w');
@@ -1181,11 +1181,11 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     const back=hero&&hero.querySelector('.hero-w_bg_back');
     const frameLayers=hero ? [...hero.querySelectorAll('.hero-w_bg_front,.hero-w_bg_front-over')] : [];
     const headerLogo=document.querySelector('.header_logo');
-    const sourceLogo=document.querySelector('.header_logo .logo svg');
     const cta=document.querySelector('.cta');
-    if(!hero||!area||!heroW||!bg||!back||!sourceLogo) return setTimeout(init,150);
+    if(!hero||!area||!heroW||!bg||!back) return setTimeout(init,80);
+    initialized=true;
 
-    /* Remove every original Jesko/Slater scroll animation that owns the mobile hero. */
+    /* One owner only: kill the legacy mobile hero timelines before the preloader leaves. */
     ScrollTrigger.getAll().forEach(st=>{
       const t=st.trigger, pin=st.pin;
       if((t && (t===area || hero.contains(t))) || (pin && hero.contains(pin))){
@@ -1193,7 +1193,6 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       }
     });
 
-    /* Clear transforms left behind by the killed timelines. */
     [heroW,bg,back,...frameLayers].forEach(el=>{
       if(!el) return;
       el.style.removeProperty('transform');
@@ -1205,24 +1204,25 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     if(!story){
       story=document.createElement('div');
       story.className='locas-window-story';
-      story.innerHTML='<div class="locas-window-kicker">Viajes para mujeres</div><div class="locas-window-logo" aria-label="Locas por la Aventura"></div><div class="locas-window-tagline">Tu locura también es la nuestra</div>';
-      story.querySelector('.locas-window-logo').appendChild(sourceLogo.cloneNode(true));
+      story.innerHTML='<div class="locas-window-kicker">Viajes para mujeres</div><div class="locas-window-tagline">Tu locura también es la nuestra</div>';
       document.body.appendChild(story);
     }
     const kicker=story.querySelector('.locas-window-kicker');
     const tagline=story.querySelector('.locas-window-tagline');
-    const logo=story.querySelector('.locas-window-logo');
+    if(headerLogo){
+      headerLogo.style.setProperty('opacity','1','important');
+      headerLogo.style.setProperty('transform','none','important');
+    }
 
-    const initialHeight=window.innerHeight; // stable value: do not recalc when Safari chrome moves.
+    const initialHeight=window.innerHeight;
     let ticking=false;
 
     function render(){
       ticking=false;
       const rect=hero.getBoundingClientRect();
-      const travel=Math.max(1, hero.offsetHeight-initialHeight);
+      const travel=Math.max(1,hero.offsetHeight-initialHeight);
       const p=clamp((-rect.top)/travel,0,1);
 
-      /* Window: one owner only. Scale away, then fade BEFORE content below appears. */
       const zoom=smooth(p/.78);
       const frameFade=1-smooth((p-.62)/.18);
       frameLayers.forEach(el=>{
@@ -1233,7 +1233,6 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       back.style.setProperty('transform',`translate3d(0,0,0) scale(${(1+zoom*.08).toFixed(4)})`,'important');
       back.style.setProperty('opacity','1','important');
 
-      /* Copy remains online for most of the hero. */
       const copyIn=smooth((p-.03)/.08);
       const copyOut=smooth((p-.76)/.16);
       const copyOpacity=copyIn*(1-copyOut);
@@ -1241,29 +1240,6 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       tagline.style.opacity=String(copyOpacity);
       kicker.style.transform=`translate3d(0,${((1-copyIn)*16-copyOut*12).toFixed(2)}px,0)`;
       tagline.style.transform=`translate3d(0,${((1-copyIn)*18+copyOut*10).toFixed(2)}px,0)`;
-
-      /* Brand is visible as soon as the preloader clears, then physically travels into the header. */
-      const settle=smooth(p/.16);
-      const move=smooth((p-.56)/.30);
-      const headerRect=headerLogo ? headerLogo.getBoundingClientRect() : null;
-      const startCx=window.innerWidth*.5;
-      const startCy=initialHeight*.47;
-      const targetCx=headerRect ? headerRect.left+headerRect.width/2 : startCx;
-      const targetCy=headerRect ? headerRect.top+headerRect.height/2 : 56;
-      const dx=(targetCx-startCx)*move;
-      const dy=(targetCy-startCy)*move;
-      const startScale=1.18-settle*.06;
-      const rawLogoWidth=Math.max(1,logo.offsetWidth);
-      const targetScale=headerRect ? headerRect.width/rawLogoWidth : .62;
-      const scale=startScale+(targetScale-startScale)*move;
-      logo.style.transform=`translate3d(calc(-50% + ${dx.toFixed(2)}px),calc(-50% + ${dy.toFixed(2)}px),0) scale(${scale.toFixed(4)})`;
-      const hand=smooth((p-.88)/.08);
-      logo.style.opacity=String(1-hand);
-
-      if(headerLogo){
-        headerLogo.style.setProperty('opacity',String(hand),'important');
-        headerLogo.style.setProperty('transform','translate3d(0,0,0) scale(1)','important');
-      }
 
       const storyOut=smooth((p-.90)/.08);
       story.style.opacity=String(1-storyOut);
@@ -1281,9 +1257,18 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     window.addEventListener('scroll',request,{passive:true});
     window.addEventListener('orientationchange',()=>setTimeout(render,250),{passive:true});
     render();
+    try{ScrollTrigger.refresh(true)}catch(e){}
+
+    /* First load must not reveal the hero before its eager images are decoded. */
+    const imgs=[...hero.querySelectorAll('img')].filter(img=>img.loading!=='lazy');
+    await Promise.allSettled(imgs.map(img=>img.complete && img.decode ? img.decode() : new Promise(res=>{img.addEventListener('load',res,{once:true});img.addEventListener('error',res,{once:true});})));
+    render();
+    window.__locasHeroReady=true;
+    document.documentElement.classList.add('locas-hero-ready');
   }
-  window.addEventListener('load',()=>setTimeout(init,700),{once:true});
-  setTimeout(init,1400);
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
 })();
 </script>
 
@@ -1398,20 +1383,23 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 </style>
 <script id="locas-preloader-handoff-script">
 (function(){
-  function cleanPreloader(){
+  let cleaned=false;
+  function hide(){
+    if(cleaned) return; cleaned=true;
     const pre=document.querySelector('[preloader]');
     if(!pre) return;
-    setTimeout(()=>{
-      pre.style.setProperty('opacity','0','important');
-      pre.style.setProperty('visibility','hidden','important');
-      pre.style.setProperty('pointer-events','none','important');
-    },900);
-    setTimeout(()=>{
-      pre.style.setProperty('display','none','important');
-    },1250);
+    pre.style.setProperty('opacity','0','important');
+    pre.style.setProperty('visibility','hidden','important');
+    pre.style.setProperty('pointer-events','none','important');
+    setTimeout(()=>pre.style.setProperty('display','none','important'),280);
   }
-  window.addEventListener('load',cleanPreloader,{once:true});
-  setTimeout(cleanPreloader,500);
+  function waitReady(){
+    if(window.innerWidth>767 || window.__locasHeroReady) return hide();
+    requestAnimationFrame(waitReady);
+  }
+  window.addEventListener('load',waitReady,{once:true});
+  setTimeout(waitReady,100);
+  setTimeout(hide,4500);
 })();
 </script>
 
