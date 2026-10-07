@@ -1152,7 +1152,10 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
   .locas-window-logo{position:absolute;top:47%;left:50%;width:min(54vw,215px);transform-origin:center;will-change:transform,opacity;filter:drop-shadow(0 2px 12px rgba(0,0,0,.12));}
   .locas-window-logo svg{display:block;width:100%;height:auto;}
 
-  .header_logo{opacity:0;will-change:opacity,transform;padding:0!important;border-radius:0!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;}
+  .header_logo{opacity:0;will-change:opacity;padding:0!important;border-radius:0!important;background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;transform:none!important;}
+  /* Mobile header must remain anchored; only the hero clone travels into it. */
+  .header{transform:none!important;}
+  .header_logo,.header_logo .link-logo,.header_logo .logo{transform:none!important;}
   .cta{z-index:35!important;}
   .features-card .text-light,.features-card p,.features-card h2,.features-card h3,.features-card h4,.features-card .p5,.features-card .p7{color:#312726!important;}
 }
@@ -1207,6 +1210,11 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     const logo=story.querySelector('.locas-window-logo');
 
     const initialHeight=window.innerHeight; // stable value: do not recalc when Safari chrome moves.
+    /* Resolve the handoff target ONCE. Re-reading it during scroll made the logo chase a moving target. */
+    const targetRect=headerLogo ? headerLogo.getBoundingClientRect() : null;
+    const targetCx=targetRect ? targetRect.left+targetRect.width/2 : window.innerWidth*.5;
+    const targetCy=targetRect ? targetRect.top+targetRect.height/2 : 56;
+    const targetWidth=targetRect ? Math.max(1,targetRect.width) : 132;
     let ticking=false;
 
     function render(){
@@ -1238,16 +1246,13 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
       /* Brand is visible as soon as the preloader clears, then physically travels into the header. */
       const settle=smooth(p/.16);
       const move=smooth((p-.56)/.30);
-      const headerRect=headerLogo ? headerLogo.getBoundingClientRect() : null;
       const startCx=window.innerWidth*.5;
       const startCy=initialHeight*.47;
-      const targetCx=headerRect ? headerRect.left+headerRect.width/2 : startCx;
-      const targetCy=headerRect ? headerRect.top+headerRect.height/2 : 56;
       const dx=(targetCx-startCx)*move;
       const dy=(targetCy-startCy)*move;
       const startScale=1.18-settle*.06;
       const rawLogoWidth=Math.max(1,logo.offsetWidth);
-      const targetScale=headerRect ? headerRect.width/rawLogoWidth : .62;
+      const targetScale=targetWidth/rawLogoWidth;
       const scale=startScale+(targetScale-startScale)*move;
       logo.style.transform=`translate3d(calc(-50% + ${dx.toFixed(2)}px),calc(-50% + ${dy.toFixed(2)}px),0) scale(${scale.toFixed(4)})`;
       const hand=smooth((p-.88)/.08);
@@ -1255,7 +1260,7 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
 
       if(headerLogo){
         headerLogo.style.setProperty('opacity',String(hand),'important');
-        headerLogo.style.setProperty('transform','translate3d(0,0,0) scale(1)','important');
+        headerLogo.style.setProperty('transform','none','important');
       }
 
       const storyOut=smooth((p-.90)/.08);
@@ -1275,8 +1280,11 @@ document.addEventListener('DOMContentLoaded',()=>{const e=document.querySelector
     window.addEventListener('orientationchange',()=>setTimeout(render,250),{passive:true});
     render();
   }
-  window.addEventListener('load',()=>setTimeout(init,700),{once:true});
-  setTimeout(init,1400);
+  /* Start as early as possible so the legacy hero timeline never gets a visible first-frame jump. */
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+  window.addEventListener('load',init,{once:true});
+  setTimeout(init,120);
 })();
 </script>
 
